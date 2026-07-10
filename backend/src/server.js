@@ -22,6 +22,9 @@ const familyRoutes = require('./routes/family.routes');
 
 const app = express();
 
+// Trust proxy headers when running behind a load balancer or reverse proxy (Render, Heroku, etc.)
+app.set('trust proxy', 1);
+
 // Connect to MongoDB
 connectDB();
 
