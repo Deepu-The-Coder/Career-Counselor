@@ -34,7 +34,8 @@ app.use(mongoSanitize());
 
 // CORS
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
+  process.env.FRONTEND_URL ,
+  'https://career-counselor-silk.vercel.app'
 ];
 if (process.env.ADDITIONAL_ALLOWED_ORIGINS) {
   allowedOrigins.push(...process.env.ADDITIONAL_ALLOWED_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean));
