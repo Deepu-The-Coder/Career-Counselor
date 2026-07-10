@@ -33,29 +33,12 @@ app.use(helmet());
 app.use(mongoSanitize());
 
 // CORS
-const allowedOrigins = [
-  process.env.FRONTEND_URL ,
-  'https://career-counselor-silk.vercel.app'
-];
-if (process.env.ADDITIONAL_ALLOWED_ORIGINS) {
-  allowedOrigins.push(...process.env.ADDITIONAL_ALLOWED_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean));
-}
-
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS policy does not allow access from origin ${origin}`));
-    }
-  },
+  origin: process.env.FRONTEND_URL,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 204,
 };
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions));clear
 app.options('*', cors(corsOptions));
 
 // Rate limiting
