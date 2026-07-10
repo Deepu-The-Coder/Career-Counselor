@@ -33,8 +33,27 @@ app.use(helmet());
 app.use(mongoSanitize());
 
 // CORS
+const allowedOrigins = (process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const isLocalhost = origin.startsWith('http://localhost') || origin.startsWith('https://localhost');
+    const isVercelPreview = origin.includes('.vercel.app') || origin.includes('.vercel.app/');
+    const isAllowed = allowedOrigins.includes(origin) || isLocalhost || isVercelPreview;
+
+    if (isAllowed) {
+      return callback(null, true);
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
 };
 
